@@ -1,12 +1,6 @@
 <?php  
   require '../../includes/funciones.php';
-  $auth = estaAutenticado();
-
-    if(!$auth){
-      header("Location: /Programacion_web/Udemy/bienesraices_inicio");
-
-    }
-
+  estaAutenticado();
 
   //Validar URL
   $id = $_GET['id'];

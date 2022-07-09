@@ -1,19 +1,14 @@
 <?php
   require '../includes/app.php';
   estaAutenticado();
+  use App\Propiedad;
 
   //importar conexion
 
   $db = conectarDB();
   
-  //Escribir query
-  $query = "SELECT * FROM propiedades";
-  
-  //consultar la base de datos
-  $resultadoConsulta = mysqli_query($db,$query);
-
-
-  //mostrar los resultados
+  //Implementar un método para obtener todas las propiedad
+  $propiedades = Propiedad::all();
 
   //Muestra mensaje condicional
   $resultado = $_GET['resultado'] ?? null; //Si no existe valor asigna uno
@@ -72,24 +67,24 @@
       <th>ACCIONES</th>
     </thead>
     <tbody ><!--Mostrar los resultados-->
-      <?php while($propiedad = mysqli_fetch_assoc($resultadoConsulta)):?>
+      <?php foreach($propiedades as $propiedad):?>
       
-      <tr>  
-        <td><?php echo $propiedad['id'];?></td>
-        <td><?php echo $propiedad['titulo'];?></td>
-        <td><img class="imagen-tabla" src="./imagenes/<?php echo $propiedad['imagen'];?>" alt="Imagen Casa"></td>
-        <td>$<?php echo $propiedad['precio'];?></td>
-        <td>
-          
+        <tr>  
+          <td><?php echo $propiedad-> id;?></td>
+          <td><?php echo $propiedad-> titulo;?></td>
+          <td><img class="imagen-tabla" src="./imagenes/<?php echo $propiedad->imagen;?>" alt="Imagen Casa"></td>
+          <td>$<?php echo $propiedad-> precio;?></td>
+          <td>
+        
         <form  method="POST" class="w-100">
-          <input type="hidden" name="id" value="<?php echo $propiedad['id'];?>">
+          <input type="hidden" name="id" value="<?php echo $propiedad-> id;?>">
           <input type="submit" value="Eliminar" class="boton-rojo-block">
         </form>
         
-          <a class="boton-amarillo-block" href="admin/propiedades/actualizar.php?id=<?php echo $propiedad['id']; ?>">Modificar</a>
+          <a class="boton-amarillo-block" href="admin/propiedades/actualizar.php?id=<?php echo $propiedad-> id; ?>">Modificar</a>
         </td>
       </tr>
-      <?php endwhile; ?>
+      <?php endforeach; ?>
     </tbody>
 
   </table>

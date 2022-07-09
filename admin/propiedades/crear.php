@@ -5,29 +5,21 @@
   use Intervention\Image\ImageManagerStatic as Image;
   
   estaAutenticado();
-  
   $db = conectarDB();
   
+  $propiedad = new Propiedad();
+
   $consulta = "SELECT * FROM vendedores";
   $resultado = mysqli_query($db, $consulta);
 
     $errores = Propiedad::getErrores();
-
-
-    $titulo = '';
-    $precio = '';
-    $descripcion = '';
-    $habitaciones = '';
-    $wc = '';
-    $estacionamiento = '';
-    $idVendedor = '';
     
   //Ejecuta el codigo despues de que el usuario llena el formulario
   if($_SERVER['REQUEST_METHOD'] === "POST"){
 
     //Crea una nueva instancia
     $propiedad = new Propiedad($_POST);
-  
+    
     //Generar nombre unico
     $nombreImagen = md5(uniqid(rand(),true)) . ".jpg";
     
@@ -42,8 +34,7 @@
     $errores = $propiedad->validar();
 
     if(empty($errores)){
-
-      
+       
       //CREA CARPETA PARA SUBIR IMAGENES
       if(!is_dir(CARPETA_IMAGENES)){
         mkdir(CARPETA_IMAGENES);
@@ -71,58 +62,17 @@
     <?php foreach($errores as $error):?>
       
       <div class="alerta error">
-      <?php echo $error?>
-    
+        <?php echo $error?>
       </div>
+      
+      <?php endforeach; ?>
+      
+      <form class="formulario" method="POST" action="admin/propiedades/crear.php" enctype="multipart/form-data">
+        
+        <?php include "../../includes/templates/formulario_propiedades.php"; ?>
+        
+        <input type="submit" value="Crear Propiedad" class="boton boton-verde">
+      </form>
+    </main>
+    <?php incluirTemplate('footer'); ?>
     
-      <?php endforeach;?>
-
-    <form class="formulario" method="POST" action="admin/propiedades/crear.php" enctype="multipart/form-data">
-      <fieldset>
-        <legend>Informacion General</legend>
-
-        <label for="titulo">Titulo</label>
-        <input type="text" name="titulo" id="titulo" placeholder="Titulo Propiedad" value="<?php echo $titulo;?>">
-
-        <label for="precio">Precio</label>
-        <input type="number" name="precio" id="precio" placeholder="Precio Propiedad" value="<?php echo $precio;?>">        
-
-        <label for="imagen">Imagen</label>
-        <input type="file" name="imagen" id="imagen" accept="image/jpeg">
-
-        <label for="descripcion" >Descripcion</label>
-        <textarea name="descripcion" id="descripcion"><?php echo $descripcion;?></textarea>
-
-      </fieldset>
-
-      <fieldset>
-        <legend>Informacion Propiedad</legend>
-
-        <label for="habitaciones">Habitaciones</label>
-        <input type="number" name="habitaciones" id="habitaciones" placeholder="Habitaciones Propiedad" minimal="1" value="<?php echo $habitaciones;?>">
-
-        <label for="wc">Baños</label>
-        <input type="number" name="wc" id="wc" placeholder="Baños Propiedad" minimal="1" value="<?php echo $wc;?>">
-
-        <label for="estacionamiento">Estacionamiento</label>
-        <input type="number" name="estacionamiento" id="estacionamiento" placeholder="Estacionamiento Propiedad" minimal="1" value="<?php echo $estacionamiento;?>">
-      </fieldset>
-
-      <fieldset>
-        <legend>Vendedor</legend>
-
-        <select name="idVendedor">
-          <option value="" >---Seleccione---</option>
-            <?php while($row = mysqli_fetch_assoc($resultado)):?>
-
-              <option  <?php echo $idVendedor === $row['id'] ? "selected" : '';?> value="<?php echo $row['id'] ?>"><?php echo $row['nombre'] . ' ' . $row['apellido']; ?></option>
-              <?php endwhile; ?>
-        </select>
-
-      </fieldset>
-      <input type="submit" value="Crear Propiedad" class="boton boton-verde">
-    </form>
-</main>
-<?php
-  incluirTemplate('footer');
-?>
