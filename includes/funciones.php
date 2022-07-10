@@ -31,3 +31,35 @@ function sanitize($html):string{
   $sanitize = htmlspecialchars($html);
   return $sanitize;
 }
+
+//Validar tipo de contenido
+
+function validarTipoContenido($tipo){
+  $tipos = ['vendedor', 'propiedad'];
+
+  return in_array($tipo, $tipos);
+}
+
+//Muestra los mensajes
+function mostrarNotificacion($codigo){
+  $mensaje = '';
+
+  switch($codigo) {
+    case 1:
+      $mensaje = "Registro Creado Bacanamente";
+      break;
+
+    case 2:
+      $mensaje = "Registro Actualizado Bacanamente";
+      break;
+
+    case 3:
+      $mensaje = "Registro Eliminado Bacanamente";
+      break;
+    
+    default:
+      $mensaje = false;
+      break;
+    }
+    return $mensaje;
+}

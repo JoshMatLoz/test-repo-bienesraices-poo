@@ -132,7 +132,7 @@ class ActiveRecord{
 
   //Validacion
   public static function getErrores(){
-    return self::$errores;
+    return static::$errores;
   }
 
   public function validar(){
@@ -144,6 +144,15 @@ class ActiveRecord{
   public static function all(){
     $query = "SELECT * FROM " . static::$tabla;
     $resultado = self::consultaSQL($query);
+    return $resultado;
+  }
+
+  //Obtiene un determinado numero de registros
+  public static function get($cantidad){
+    $query = "SELECT * FROM " . static::$tabla . " LIMIT " . $cantidad ;
+
+    $resultado = self::consultaSQL($query);
+    
     return $resultado;
   }
 
@@ -163,7 +172,7 @@ public static function find($id){
     //Iterar los resultados
     $array = [];
     while($registro = $resultado->fetch_assoc()){
-      $array[] = self::crearObjeto($registro);
+      $array[] = static::crearObjeto($registro);
     }
 
     //Liberar la memoria
