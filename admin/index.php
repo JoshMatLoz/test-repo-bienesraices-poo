@@ -1,10 +1,11 @@
 <?php
-  require '../includes/app.php';
-  estaAutenticado();
   use App\Propiedad;
+  
+  require '../includes/app.php';
 
+  estaAutenticado();
+  
   //importar conexion
-
   $db = conectarDB();
   
   //Implementar un método para obtener todas las propiedad
@@ -18,29 +19,12 @@
     $id = $_POST['id'];
     $id = filter_var($id, FILTER_VALIDATE_INT);
 
-    if($id){
-
-      //eliminar el archivo
-      $query = "SELECT imagen FROM propiedades WHERE id = ${id}";
-      $resultado = mysqli_query($db, $query);
-      $propiedad = mysqli_fetch_assoc($resultado);
-      unlink('../imagenes/' . $propiedad['imagen']);
-
-      //Eliminar la propiedad
-      $query = "DELETE FROM propiedades where id= ${id}";
-      
-      $resultado = mysqli_query($db, $query);
-
-      if($resultado){
-        
-        header("Location: ./?resultado=3");
-      }
-
+      if($id){
+        $propiedad = Propiedad::find( $id );
+        $propiedad->eliminar();
     }
   }
-
   //Incluye template
-  // require '../includes/funciones.php';
   incluirTemplate('header');
 ?>
 

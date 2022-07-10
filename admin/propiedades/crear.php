@@ -18,15 +18,15 @@
   if($_SERVER['REQUEST_METHOD'] === "POST"){
 
     //Crea una nueva instancia
-    $propiedad = new Propiedad($_POST);
+    $propiedad = new Propiedad($_POST['propiedad']);
     
     //Generar nombre unico
     $nombreImagen = md5(uniqid(rand(),true)) . ".jpg";
     
     //setea imagen
     //Realiza un resize de la imagen con intervention
-    if($_FILES['imagen']['tmp_name']){
-      $image = Image::make($_FILES['imagen']['tmp_name'])->fit(800,600);
+    if($_FILES['propiedad']['tmp_name']['imagen']){
+      $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
       $propiedad->setImagen($nombreImagen);
     }
     
@@ -44,12 +44,7 @@
       $image->save(CARPETA_IMAGENES . $nombreImagen);
 
       //GUARDA EN LA BASE DE DATOS
-      $resultado = $propiedad->guardar();
-
-      //MENSAJE DE EXITO O ERROR
-      if($resultado){
-        header('Location: ../index.php?resultado=1');
-      }
+      $propiedad->guardar();
     }
   }
   incluirTemplate('header');

@@ -19,7 +19,7 @@ function estaAutenticado() {
   }
 }
 
-function debuguear($variable){
+function deb($variable){
   echo '<pre>';
   var_dump($variable);
   echo '</pre>';
