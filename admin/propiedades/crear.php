@@ -2,17 +2,17 @@
   require '../../includes/app.php';  
   
   use App\Propiedad;
+  use App\Vendedor;
   use Intervention\Image\ImageManagerStatic as Image;
   
   estaAutenticado();
-  $db = conectarDB();
   
   $propiedad = new Propiedad();
 
-  $consulta = "SELECT * FROM vendedores";
-  $resultado = mysqli_query($db, $consulta);
+  //Consulta para obtener todos los vendedores
+  $vendedores = Vendedor::all();
 
-    $errores = Propiedad::getErrores();
+  $errores = Propiedad::getErrores();
     
   //Ejecuta el codigo despues de que el usuario llena el formulario
   if($_SERVER['REQUEST_METHOD'] === "POST"){
@@ -29,7 +29,6 @@
       $image = Image::make($_FILES['propiedad']['tmp_name']['imagen'])->fit(800,600);
       $propiedad->setImagen($nombreImagen);
     }
-    
     //Validar
     $errores = $propiedad->validar();
 

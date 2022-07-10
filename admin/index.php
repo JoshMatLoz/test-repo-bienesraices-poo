@@ -1,15 +1,14 @@
 <?php
   use App\Propiedad;
+  use App\Vendedor;
   
   require '../includes/app.php';
 
   estaAutenticado();
-  
-  //importar conexion
-  $db = conectarDB();
-  
+
   //Implementar un método para obtener todas las propiedad
   $propiedades = Propiedad::all();
+  $vendedores = Vendedor::all();
 
   //Muestra mensaje condicional
   $resultado = $_GET['resultado'] ?? null; //Si no existe valor asigna uno
